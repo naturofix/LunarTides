@@ -35,7 +35,7 @@ function(input, output, session) {
         analysis(build_analysis(cache$tides_ts, cache$tides_ext))
         
         last_day <- max(cache$tides_ts$time, na.rm = TRUE)
-        first_day <- last_day - lubridate::days(3)  # last 3 days
+        first_day <- last_day - lubridate::days(1)  # last 3 days
         updateDateRangeInput(session, "range",
                              start = first_day,
                              end   = last_day)
@@ -104,7 +104,7 @@ function(input, output, session) {
     # keep the UI range as Dates (not POSIXct)
     
     last_day <- max(cache$tides_ts$time, na.rm = TRUE)
-    first_day <- last_day - lubridate::days(3)  # last 3 days
+    first_day <- last_day - lubridate::days(1)  # last 3 days
     
     updateDateRangeInput(session, "range", start = first_day, end = last_day)
     
@@ -150,7 +150,7 @@ function(input, output, session) {
     
     cache = values$cache
     last_day <- max(cache$tides_ts$time, na.rm = TRUE)
-    first_day <- last_day - lubridate::days(3)  # last 3 days
+    first_day <- last_day - lubridate::days(1)  # last 3 days
     
     min_t =  last_day - lubridate::days(30)
     # first_time
@@ -235,15 +235,17 @@ function(input, output, session) {
         name = "Tide height (m)",
         sec.axis = sec_axis(~ 90 * ., name = "Altitude (°)", breaks = c(-90, -45, 0, 45, 90))
       ) +
-      geom_hline(yintercept = 0,col = 'white') +
+        geom_hline(yintercept = c(-1, -0.5, 0, 0.5, 1), colour = "white", linetype = "dotted") +
+        
+      #geom_hline(yintercept = 0,col = 'white') +
       #geom_abline(intercept = 1,slope = -1, col = 'white',linetype = 'dashed', linewidth = 3) +
       
       labs(x = NULL, title = "Tides", color = NULL) 
   )
     
-    ggplot(df) + 
-      geom_point(aes(x = time, y = height_m)) +
-      geom_abline(intercept = 1,slope = -1, col = 'white',linetype = 'dashed', linewidth = 3)
+    # ggplot(df) + 
+    #   geom_point(aes(x = time, y = height_m)) +
+    #   geom_abline(intercept = 1,slope = -1, col = 'white',linetype = 'dashed', linewidth = 3)
       
       
     p
